@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maison Lumière – Luxury Fashion Boutique</title>
+  
+  <!-- Dialogflow Messenger Integration -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf7f2;
+      --gold:  #c8a96e;
+      --dark:  #1a1a1a;
+      --mid:   #4a4a4a;
+      --light: #9a9a9a;
+      --white: #ffffff;
+      --chat-bg: #f5f0ea;
+    }
+    body { font-family: 'Georgia', serif; background: var(--cream); color: var(--dark); }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Navbar ── */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 60px;
+      background: var(--white);
+      border-bottom: 1px solid #e8e0d5;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo { font-size: 1.6rem; letter-spacing: 4px; color: var(--dark); }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 36px; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); }
+    .nav-links a:hover { color: var(--gold); transition: color 0.3s; }
+
+    /* ── Hero ── */
+    .hero {
+      height: 88vh;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2e2a24 50%, #1a1a1a 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+    }
+    .hero-eyebrow { font-size: 0.75rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); color: var(--white); letter-spacing: 2px; line-height: 1.2; margin-bottom: 24px; }
+    .hero p { font-size: 1.05rem; color: #c0b8ae; max-width: 540px; line-height: 1.8; margin-bottom: 40px; }
+    .hero-btns { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      padding: 15px 38px; background: var(--gold); color: var(--white);
+      font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
+      border: none; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-primary:hover { background: #b8953e; }
+    .btn-outline {
+      padding: 15px 38px; background: transparent; color: var(--white);
+      font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── About Strip ── */
+    .about-strip {
+      display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
+      background: var(--white); padding: 50px 60px;
+      border-bottom: 1px solid #e8e0d5;
+    }
+    .about-item { text-align: center; }
+    .about-item .num { font-size: 2.2rem; color: var(--gold); margin-bottom: 4px; }
+    .about-item .lbl { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--light); }
+
+    /* ── Services ── */
+    .section { padding: 90px 60px; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header .tag { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .section-header h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--dark); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; max-width: 1100px; margin: 0 auto; }
+    .service-card {
+      background: var(--white); padding: 40px 30px; text-align: center;
+      border: 1px solid #e8e0d5; transition: all 0.3s;
+    }
+    .service-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(200,169,110,0.15); }
+    .service-icon { font-size: 2.4rem; margin-bottom: 18px; }
+    .service-card h3 { font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 12px; color: var(--dark); }
+    .service-card p { font-size: 0.88rem; color: var(--light); line-height: 1.7; }
+
+    /* ── Collections ── */
+    .collections-section { background: #f0ebe3; }
+    .collections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
+    .collection-card { overflow: hidden; }
+    .collection-img {
+      height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      transition: transform 0.4s;
+    }
+    .collection-card:hover .collection-img { transform: scale(1.04); }
+    .col1 { background: linear-gradient(135deg, #2c2c2c, #4a4040); }
+    .col2 { background: linear-gradient(135deg, #3a2e24, #5c4a36); }
+    .col3 { background: linear-gradient(135deg, #1e2c3a, #2e4a5c); }
+    .collection-info { padding: 22px; background: var(--white); }
+    .collection-info h3 { font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .collection-info p { font-size: 0.82rem; color: var(--light); }
+
+    /* ── Testimonials ── */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }
+    .testimonial { background: var(--white); padding: 36px; border-left: 3px solid var(--gold); }
+    .testimonial p { font-style: italic; color: var(--mid); line-height: 1.8; margin-bottom: 18px; }
+    .testimonial .author { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--dark); color: #888; padding: 60px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;
+    }
+    footer h4 { color: var(--white); font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+    footer p, footer li { font-size: 0.82rem; line-height: 2; list-style: none; }
+    footer li:hover { color: var(--gold); cursor: pointer; transition: color 0.3s; }
+    .footer-logo { font-size: 1.5rem; letter-spacing: 4px; color: var(--white); margin-bottom: 12px; }
+    .footer-logo span { color: var(--gold); }
+
+    #chat-launcher {
+      display: none; /* Hidden - using Dialogflow instead */
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">MAISON <span>LUMIÈRE</span></div>
+  <div class="nav-links">
+    <a href="#collections">Collections</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-eyebrow">Paris · Milan · Bangkok</div>
+  <h1>Where Elegance<br>Meets Artistry</h1>
+  <p>Maison Lumière is an exclusive luxury fashion house crafting bespoke couture and ready-to-wear collections that celebrate the modern individual.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('collections').scrollIntoView({behavior:'smooth'})">Explore Collections</button>
+    <button class="btn-outline" onclick="openChat()">Design Inquiry ✦</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ABOUT STRIP
+════════════════════════════════════════════ -->
+<div class="about-strip" id="about">
+  <div class="about-item"><div class="num">12+</div><div class="lbl">Years of Couture</div></div>
+  <div class="about-item"><div class="num">3,200+</div><div class="lbl">Bespoke Clients</div></div>
+  <div class="about-item"><div class="num">48</div><div class="lbl">Countries Served</div></div>
+  <div class="about-item"><div class="num">6</div><div class="lbl">Annual Collections</div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════════ -->
+<section class="section" id="services">
+  <div class="section-header">
+    <div class="tag">What We Offer</div>
+    <h2>Our Signature Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">✂️</div>
+      <h3>Bespoke Couture</h3>
+      <p>Fully custom garments crafted to your exact measurements and aesthetic vision, delivered in 6–8 weeks.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👗</div>
+      <h3>Ready-to-Wear</h3>
+      <p>Seasonal collections blending Parisian refinement with contemporary silhouettes available in-store and online.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💍</div>
+      <h3>Bridal Atelier</h3>
+      <p>Exclusive bridal design consultations with our master tailors for your most important day.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <h3>Style Consultation</h3>
+      <p>One-on-one sessions with our personal stylists to curate your wardrobe and define your signature look.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛍️</div>
+      <h3>VIP Personal Shopping</h3>
+      <p>Dedicated personal shoppers for our Elite members, with private showroom access and priority reservations.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Alterations & Care</h3>
+      <p>Expert garment alterations and luxury fabric care services to keep your pieces in immaculate condition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     COLLECTIONS
+════════════════════════════════════════════ -->
+<section class="section collections-section" id="collections">
+  <div class="section-header">
+    <div class="tag">2025 – 2026</div>
+    <h2>Current Collections</h2>
+  </div>
+  <div class="collections-grid">
+    <div class="collection-card">
+      <div class="collection-img col1">🌑</div>
+      <div class="collection-info">
+        <h3>Nuit Éternelle</h3>
+        <p>Evening wear — Obsidian & Midnight hues for unforgettable occasions</p>
+      </div>
+    </div>
+    <div class="collection-card">
+      <div class="collection-img col2">🌿</div>
+      <div class="collection-info">
+        <h3>Terre Dorée</h3>
+        <p>Resort collection — Earth tones, linen & sustainable luxury fabrics</p>
+      </div>
+    </div>
+    <div class="collection-card">
+      <div class="collection-img col3">❄️</div>
+      <div class="collection-info">
+        <h3>Hiver Bleu</h3>
+        <p>Winter couture — Rich wool, cashmere & structured tailoring</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════ -->
+<section class="section" style="background:var(--white);">
+  <div class="section-header">
+    <div class="tag">Client Stories</div>
+    <h2>Words from Our Patrons</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <p>"The bespoke gown Maison Lumière created for my gala was nothing short of a masterpiece. Every stitch told a story."</p>
+      <div class="author">— Sofia R., Dubai</div>
+    </div>
+    <div class="testimonial">
+      <p>"From the style consultation to the final fitting, the experience was seamless and deeply personal. Truly world-class."</p>
+      <div class="author">— James T., London</div>
+    </div>
+    <div class="testimonial">
+      <p>"Their AI design assistant helped me articulate my vision before I even walked through the door. Incredibly thoughtful service."</p>
+      <div class="author">— Aiko M., Tokyo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer id="contact">
+  <div>
+    <div class="footer-logo">MAISON <span>LUMIÈRE</span></div>
+    <p>Where every garment is a<br>work of wearable art.</p>
+  </div>
+  <div>
+    <h4>Collections</h4>
+    <ul>
+      <li>Nuit Éternelle</li>
+      <li>Terre Dorée</li>
+      <li>Hiver Bleu</li>
+      <li>Bridal Atelier</li>
+    </ul>
+  </div>
+  <div>
+    <h4>Services</h4>
+    <ul>
+      <li>Bespoke Couture</li>
+      <li>Style Consultation</li>
+      <li>VIP Shopping</li>
+      <li>Alterations & Care</li>
+    </ul>
+  </div>
+  <div>
+    <h4>Visit Us</h4>
+    <p>88 Rue de la Paix, Paris<br>Silom Road, Bangkok<br>Via Montenapoleone, Milan</p>
+    <p style="margin-top:12px;">hello@maisonlumiere.com<br>+33 1 55 00 88 00</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     DIALOGFLOW MESSENGER
+════════════════════════════════════════════ -->
+<df-messenger
+  intent="WELCOME"
+  chat-title="MaisonBot"
+  agent-id="b2497367-37bd-4768-addc-ea904c2e68d5"
+  language-code="en"
+></df-messenger>
+</body>
+</html>
